@@ -13,8 +13,9 @@ Enter confirmation code: bbb
 The two-step verification is enabled and a password is required
 Password hint: None
 Enter password (empty to recover): ccc
-6. On complete container will fail - this is normal due to unset variables. Now set up those variables: CHANNELS=channel,names,through,commas and CHAT_IDS=chat,ids,through,commas. Example:
-CHAT_IDS=-1001005702961
+```
+6. On complete container will fail - this is normal due to unset variables. Now set up those variables: `CHANNELS=channel,names,through,commas` and `CHAT_IDS=chat,ids,through,commas`. Example:
+```CHAT_IDS=-1001005702961
 CHANNELS=addmeto,techsparks
 ```
 
