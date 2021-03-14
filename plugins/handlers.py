@@ -7,7 +7,7 @@ from pyrogram import Client, filters
 logging.basicConfig(level=logging.INFO, datefmt='%Y/%m/%d %H:%M:%S', format='%(levelname)s: %(message)s')
 
 CHANNELS_LIST = os.getenv('CHANNELS').split(',')
-CHAT_IDS = os.getenv('CHAT_IDS').split(',')
+CHAT_IDS = [int(chat_id) for chat_id in os.getenv('CHAT_IDS').split(',')]
 
 
 @Client.on_message(filters.channel)
