@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
     pyrogram:
-        build: Pyrogram
-        image: qqalexqq/tgforwarder:latest
+        image: justpieceofmeat/pyrogram:latest
         volumes:
             - ./sessions:/sessions/
             - ./plugins:/plugins/
