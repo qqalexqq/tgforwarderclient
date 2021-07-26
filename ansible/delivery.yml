@@ -1,0 +1,19 @@
+---
+-
+  name: Create deployment directory
+  file:
+    path: ~/deploy/
+    state: directory
+    group: developers
+-
+  name: Clean old services files
+  file:
+    state: absent
+    path: ~/deploy/
+-
+  name: Synchronize
+  synchronize:
+    src: "{{ deploy_dir_src }}"
+    dest: ~/deploy/
+    recursive: true
+    mode: push

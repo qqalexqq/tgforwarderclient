@@ -1,0 +1,70 @@
+---
+name: 🏃 Deploy to remote server
+
+on:
+  release:
+    types:
+      - created
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHON_VERSION: "3.9"
+      PLAYBOOKS_DIR: playbooks
+      PREPARATION_DIR: preparation
+      DEPLOYMENT_USER: worker
+      DEPLOYMENT_HOST: ${{ secrets.REPO_DEPLOYMENT_HOST }}
+
+    steps:
+      -
+        name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      -
+        name: 👯‍ Checkout
+        uses: actions/checkout@v2
+      -
+        name: 🍺 Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --quiet software-properties-common
+          sudo apt-add-repository --yes --update ppa:ansible/ansible
+          sudo apt-get install --yes --quiet python3-pip rsync
+          python3 -m pip install ansible
+      -
+        name: 🗃️ Prepare files for deployment
+        run: |
+          mkdir -v ${{ env.DEPLOYMENT_DIR }}
+          cp -vR plugins   ${{ env.PREPARATION_DIR }}/services
+          cp -vR sessions  ${{ env.PREPARATION_DIR }}/volumes
+      -
+        name: 🗝️ Write private key
+        env:
+          PRIVATE_DEPLOY_KEY: ${{ secrets.PRIVATE_DEPLOY_KEY }}
+        run: |
+          echo "$PRIVATE_DEPLOY_KEY" > ci_id_rsa
+          chmod -v 600 ci_id_rsa
+      -
+        name: 📦 Delivery to remote server
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+        run: |
+          eval $(ssh-agent -s) && ssh-add ci_id_rsa
+          cd ansible
+          ansible-playbook playbooks/delivery_to_stand.yml --extra-vars "deploy_dir_src=$PWD/../${{ env.DEPLOYMENT_DIR }}/" \
+                                                           --limit ${{ env.DEPLOYMENT_HOST }} \
+                                                           --user ${{ env.DEPLOYMENT_USER }}
+      -
+        name: 💃 Up services
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+        run: |
+          eval $(ssh-agent -s) && ssh-add ci_id_rsa
+          cd ${{ env.PLAYBOOKS_DIR }}
+          ansible-playbook playbooks/up_compose_services.yml --limit ${{ env.DEPLOYMENT_HOST }} \
+                                                             --user ${{ env.DEPLOYMENT_USER }}
