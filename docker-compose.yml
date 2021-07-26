@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-    pyrogram:
-        image: justpieceofmeat/pyrogram:latest
-        volumes:
-            - ./sessions:/sessions/
-            - ./plugins:/plugins/
-        environment:
-            - API_ID
-            - API_HASH
-            - SESSION_NAME
-            - CHANNELS=addmeto,techsparks,g33ks,blognot,radio_t_podcast,asdfajsdfkl
-            - CHAT_IDS=-1001005702961
+  pyrogram:
+    image: justpieceofmeat/pyrogram:latest
+    volumes:
+      - ./sessions:/sessions/
+      - ./plugins:/plugins/
+    environment:
+      - API_ID
+      - API_HASH
+      - SESSION_NAME
+      - CHANNELS=addmeto,techsparks,g33ks,blognot,radio_t_podcast,asdfajsdfkl
+      - CHAT_IDS=-1001005702961

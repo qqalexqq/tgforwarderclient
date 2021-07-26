@@ -1,0 +1,79 @@
+---
+name: 🏃 Deploy to remote server
+
+on:
+  workflow_dispatch:
+    inputs:
+      bot_channels:
+        description: Channels
+        required: true
+        default: "addmeto,techsparks"
+      bot_chats:
+        description: Chats
+        required: true
+        default: "-1234567890"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHON_VERSION: "3.9"
+      PLAYBOOKS_DIR: playbooks
+      PREPARATION_DIR: preparation
+
+    steps:
+      -
+        name: 🐍 Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      -
+        name: 👯‍ Checkout
+        uses: actions/checkout@v2
+      -
+        name: 🍺 Install dependencies
+        run: |
+          sudo apt-get install rsync
+          python3 -m pip install ansible
+      -
+        name: 🗃️ Prepare files for deployment
+        run: |
+          mkdir -v ${{ env.DEPLOYMENT_DIR }}
+          cp -vR plugins             ${{ env.PREPARATION_DIR }}/services
+          cp -vR sessions            ${{ env.PREPARATION_DIR }}/volumes
+          cp -v  docker-compose.yml  ${{ env.PREPARATION_DIR }}/
+      -
+        name: 🗝️ Write private key
+        env:
+          PRIVATE_DEPLOY_KEY: ${{ secrets.PRIVATE_DEPLOY_KEY }}
+        run: |
+          echo "$PRIVATE_DEPLOY_KEY" > ci_id_rsa
+          chmod -v 600 ci_id_rsa
+      -
+        name: Create Ansible inventory
+        run: |
+          - echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
+      -
+        name: 📦 Delivery to remote server
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+        run: |
+          eval $(ssh-agent -s) && ssh-add ci_id_rsa
+          ansible-playbook \
+            --inventory hosts \
+            ansible/delivery_to_stand.yml \
+              --extra-vars "deploy_dir_src=$PWD/../${{ env.PREPARATION_DIR }}/    \
+                            bot_channels=${{ github.event.inputs.bot_channels }}  \
+                            bot_channels=${{ github.event.inputs.bot_chats }}"    \
+            --user ${{ secrets.PRIVATE_DEPLOY_USER }}
+      -
+        name: 💃 Up services
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: 'false'
+        run: |
+          eval $(ssh-agent -s) && ssh-add ci_id_rsa
+          ansible-playbook  \
+            --inventory hosts \
+            playbooks/up_compose_services.yml \
+            --user ${{ secrets.PRIVATE_DEPLOY_USER }}
