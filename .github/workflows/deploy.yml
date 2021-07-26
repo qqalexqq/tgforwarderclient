@@ -21,7 +21,6 @@ jobs:
       PYTHON_VERSION: "3.9"
       PLAYBOOKS_DIR: playbooks
       PREPARATION_DIR: preparation
-      DEPLOYMENT_USER: worker
 
     steps:
       -
@@ -67,13 +66,14 @@ jobs:
               --extra-vars "deploy_dir_src=$PWD/../${{ env.PREPARATION_DIR }}/    \
                             bot_channels=${{ github.event.inputs.bot_channels }}  \
                             bot_channels=${{ github.event.inputs.bot_chats }}"    \
-            --user ${{ env.DEPLOYMENT_USER }}
+            --user ${{ secrets.PRIVATE_DEPLOY_USER }}
       -
         name: 💃 Up services
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
         run: |
           eval $(ssh-agent -s) && ssh-add ci_id_rsa
-          cd ${{ env.PLAYBOOKS_DIR }}
-          ansible-playbook playbooks/up_compose_services.yml --limit ${{ env.DEPLOYMENT_HOST }} \
-                                                             --user ${{ env.DEPLOYMENT_USER }}
+          ansible-playbook  \
+            --inventory hosts \
+            playbooks/up_compose_services.yml \
+            --user ${{ secrets.PRIVATE_DEPLOY_USER }}
