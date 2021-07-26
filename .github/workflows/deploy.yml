@@ -2,11 +2,16 @@
 name: 🏃 Deploy to remote server
 
 on:
-  release:
-    types:
-      - created
-
   workflow_dispatch:
+    inputs:
+      bot_channels:
+        description: Channels
+        required: true
+        default: "addmeto,techsparks"
+      bot_chats:
+        description: Chats
+        required: true
+        default: "-1234567890"
 
 jobs:
   deploy:
@@ -17,7 +22,6 @@ jobs:
       PLAYBOOKS_DIR: playbooks
       PREPARATION_DIR: preparation
       DEPLOYMENT_USER: worker
-      DEPLOYMENT_HOST: ${{ secrets.REPO_DEPLOYMENT_HOST }}
 
     steps:
       -
@@ -29,12 +33,9 @@ jobs:
         name: 👯‍ Checkout
         uses: actions/checkout@v2
       -
-        name: 🍺 Install system dependencies
+        name: 🍺 Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes --quiet software-properties-common
-          sudo apt-add-repository --yes --update ppa:ansible/ansible
-          sudo apt-get install --yes --quiet python3-pip rsync
+          sudo apt-get install rsync
           python3 -m pip install ansible
       -
         name: 🗃️ Prepare files for deployment
@@ -50,15 +51,22 @@ jobs:
           echo "$PRIVATE_DEPLOY_KEY" > ci_id_rsa
           chmod -v 600 ci_id_rsa
       -
+        name: Create Ansible inventory
+        run: |
+          - echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
+      -
         name: 📦 Delivery to remote server
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
         run: |
           eval $(ssh-agent -s) && ssh-add ci_id_rsa
-          cd ansible
-          ansible-playbook playbooks/delivery_to_stand.yml --extra-vars "deploy_dir_src=$PWD/../${{ env.DEPLOYMENT_DIR }}/" \
-                                                           --limit ${{ env.DEPLOYMENT_HOST }} \
-                                                           --user ${{ env.DEPLOYMENT_USER }}
+          ansible-playbook \
+            --inventory hosts \
+            ansible/delivery_to_stand.yml \
+              --extra-vars "deploy_dir_src=$PWD/../${{ env.PREPARATION_DIR }}/    \
+                            bot_channels=${{ github.event.inputs.bot_channels }}  \
+                            bot_channels=${{ github.event.inputs.bot_chats }}"    \
+            --user ${{ env.DEPLOYMENT_USER }}
       -
         name: 💃 Up services
         env:

@@ -1,19 +1,35 @@
 ---
--
-  name: Create deployment directory
-  file:
-    path: ~/deploy/
-    state: directory
-    group: developers
--
-  name: Clean old services files
-  file:
-    state: absent
-    path: ~/deploy/
--
-  name: Synchronize
-  synchronize:
-    src: "{{ deploy_dir_src }}"
-    dest: ~/deploy/
-    recursive: true
-    mode: push
+- name: Deploy and restart service
+  hosts: all
+  tasks:
+    -
+      name: Create deployment directory
+      file:
+        path: ~/bot/
+        state: directory
+    -
+      name: Clean old services files
+      file:
+        state: absent
+        path: ~/bot/
+    -
+      name: Synchronize
+      synchronize:
+        src: "{{ deploy_dir_src }}"
+        dest: ~/bot/
+        recursive: true
+        mode: push
+    -
+      name: Docker Compose UP
+      environment:
+        CHANNELS: "{{ bot_channels }}"
+        CHAT_IDS: "{{ bot_chat_ids }}"
+      docker_compose:
+        project_src: ~/bot/
+        recreate: smart
+        remove_orphans: true
+    -
+      name: Prune docker images and cache
+      community.docker.docker_prune:
+        images: true
+        builder_cache: true
