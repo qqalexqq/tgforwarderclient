@@ -39,7 +39,7 @@ jobs:
       -
         name: 🗃️ Prepare files for deployment
         run: |
-          mkdir -v ${{ env.DEPLOYMENT_DIR }}
+          mkdir -v ${{ env.PREPARATION_DIR }}
           cp -vR plugins             ${{ env.PREPARATION_DIR }}/services
           cp -vR sessions            ${{ env.PREPARATION_DIR }}/volumes
           cp -v  docker-compose.yml  ${{ env.PREPARATION_DIR }}/
