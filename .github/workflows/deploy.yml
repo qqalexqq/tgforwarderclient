@@ -8,7 +8,7 @@ on:
         description: Channels
         required: true
         default: "addmeto,techsparks"
-      bot_chats:
+      bot_chat_ids:
         description: Chats
         required: true
         default: "-1234567890"
@@ -65,6 +65,7 @@ jobs:
             ansible/delivery_to_stand.yml \
               --extra-vars "deploy_dir_src=$PWD/../${{ env.PREPARATION_DIR }}/    \
                             bot_channels=${{ github.event.inputs.bot_channels }}  \
+                            bot_chat_ids=${{ github.event.inputs.bot_chat_ids }}  \
                             bot_session_key=${{ secrets.PRIVATE_SESSION_KEY }}"   \
             --user ${{ secrets.PRIVATE_DEPLOY_USER }}
       -
