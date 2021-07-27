@@ -53,7 +53,7 @@ jobs:
       -
         name: Create Ansible inventory
         run: |
-          - echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
+          echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
       -
         name: 📦 Delivery to remote server
         env:
