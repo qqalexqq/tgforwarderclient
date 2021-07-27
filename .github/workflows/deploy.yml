@@ -51,7 +51,7 @@ jobs:
           echo "$PRIVATE_DEPLOY_KEY" > ci_id_rsa
           chmod -v 600 ci_id_rsa
       -
-        name: Create Ansible inventory
+        name: 🙈 Create Ansible inventory
         run: |
           echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
       -
