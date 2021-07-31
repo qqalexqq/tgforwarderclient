@@ -2,13 +2,10 @@ version: '3.8'
 
 services:
   pyrogram:
-    image: justpieceofmeat/pyrogram:latest
-    volumes:
-      - ./sessions:/sessions/
-      - ./plugins:/plugins/
+    build: Pyrogram
     environment:
       - API_ID
       - API_HASH
-      - SESSION_NAME
-      - CHANNELS=addmeto,techsparks,g33ks,blognot,radio_t_podcast,asdfajsdfkl
+      - SESSION_KEY
+      - CHANNELS=addmeto,techsparks,g33ks,blognot,radio_t_podcast,durov_russia,daily_geek_news,asdfajsdfkl
       - CHAT_IDS=-1001005702961
