@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   pyrogram:
-    build: Pyrogram
+    build: ghcr.io/qqalexqq/TGForwarderClient:latest
     environment:
-      - API_ID
-      - API_HASH
-      - SESSION_KEY
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - SESSION_KEY=${SESSION_KEY}
       - CHANNELS=addmeto,techsparks,g33ks,blognot,radio_t_podcast,durov_russia,daily_geek_news,asdfajsdfkl
       - CHAT_IDS=-1001005702961
