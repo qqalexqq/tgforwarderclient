@@ -22,8 +22,9 @@
     -
       name: Docker Compose UP
       environment:
-        CHANNELS: "{{ bot_channels }}"
-        CHAT_IDS: "{{ bot_chat_ids }}"
+        API_ID: "{{ bot_api_id }}"
+        API_HASH: "{{ bot_api_hash }}"
+        SESSION_KEY: "{{ bot_session_key }}"
       docker_compose:
         project_src: ~/bot/
         recreate: smart
