@@ -45,14 +45,14 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            "${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:latest"
-            "${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:${{ steps.extract_name_and_version.outputs.sha }}"
-            "${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:${{ steps.extract_name_and_version.outputs.major_ver }}"
-            "${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:${{ steps.extract_name_and_version.outputs.minor_ver }}"
-            "${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:${{ steps.extract_name_and_version.outputs.ver }}"
+            "${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:latest"
+            "${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:${{ steps.extract_name_and_version.outputs.sha }}"
+            "${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:${{ steps.extract_name_and_version.outputs.major_ver }}"
+            "${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:${{ steps.extract_name_and_version.outputs.minor_ver }}"
+            "${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:${{ steps.extract_name_and_version.outputs.ver }}"
           labels:
             "org.opencontainers.image.source=https://github.com/${{ github.repository }}"
           build-args: |
             SHORTENER_VERSION=${{ steps.extract_name_and_version.outputs.ver }}
-          cache-from: type=registry,ref=${{ env.REGISTRY_HOST }}/${{ lowercase(github.repository) }}:${{ steps.extract_name_and_version.outputs.minor_ver }}
+          cache-from: type=registry,ref=${{ env.REGISTRY_HOST }}/${{ tg-forwarder-client }}:${{ steps.extract_name_and_version.outputs.minor_ver }}
           cache-to: type=inline
