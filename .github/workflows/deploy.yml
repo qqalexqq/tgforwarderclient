@@ -51,8 +51,6 @@ jobs:
         name: 🙈 Create Ansible inventory
         run: |
           echo "${{ secrets.REPO_DEPLOYMENT_HOST }}" > hosts
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
       -
         name: 📦 Delivery to remote server
         env:
