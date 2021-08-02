@@ -34,7 +34,7 @@ jobs:
         name: 🍺 Install dependencies
         run: |
           sudo apt-get install rsync
-          python3 -m pip install ansible~=${{ env.ANSIBLE_VERSION }} docker~=5.0.0
+          pip install ansible~=${{ env.ANSIBLE_VERSION }} docker~=5.0.0
       -
         name: 🗃️ Prepare files for deployment
         run: |
