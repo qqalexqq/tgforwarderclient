@@ -16,7 +16,10 @@
     - 
       name: Install docker package for python
       pip:
-        name: docker~=5.0.0
+        name:
+          - pip
+          - docker-compose
+          - docker~=5.0.0
     -
       name: Create deployment directory
       file:
