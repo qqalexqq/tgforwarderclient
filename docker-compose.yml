@@ -5,8 +5,8 @@ services:
 #    image: ghcr.io/qqalexqq/tgforwarderclient:latest
     build: .
     environment:
-      BOT_API_ID: "911"
-      BOT_API_HASH: "{API_HASH}"
+      BOT_API_ID: ${API_ID}
+      BOT_API_HASH: ${API_HASH}
       BOT_CHANNELS: |
         [
           "addmeto",
@@ -19,4 +19,4 @@ services:
           "asdfajsdfkl"
         ]
       BOT_CHATS: "[-1001005702961]"
-      BOT_SESSION_KEY: "{SESSION_KEY}"
+      BOT_SESSION_KEY: ${SESSION_KEY}
