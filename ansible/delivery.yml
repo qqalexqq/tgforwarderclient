@@ -3,6 +3,17 @@
   hosts: all
   tasks:
     - 
+      name: Install a list of packages
+      state: latest
+      autoclean: true
+      update_cache: true
+      apt:
+        pkg:
+          - python3
+          - python3-pip
+          - python3-setuptools
+          - rsync
+    - 
       name: Install docker package for python
       pip:
         name: docker~=5.0.0
