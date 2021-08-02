@@ -4,7 +4,6 @@
   tasks:
     - 
       name: Install a list of packages
-      state: latest
       autoclean: true
       update_cache: true
       apt:
