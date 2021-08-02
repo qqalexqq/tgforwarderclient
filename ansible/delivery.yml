@@ -46,6 +46,7 @@
       docker_compose:
         project_src: ~/bot/
         recreate: smart
+        pull: true
         remove_orphans: true
     -
       name: Prune docker images and cache
