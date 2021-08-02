@@ -12,6 +12,7 @@ jobs:
       PYTHON_VERSION: "3.9"
       PLAYBOOKS_DIR: playbooks
       PREPARATION_DIR: preparation
+      ANSIBLE_VERSION: 4.3.0
 
     steps:
       -
@@ -23,10 +24,17 @@ jobs:
         name: 👯‍ Checkout
         uses: actions/checkout@v2
       -
-        name: 🍺 Install dependencies
+        name: Check cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+          key: ansible-${{ env.ANSIBLE_VERSION }}
+      -
+        name: 🍺 Install rsync and Ansible {{ env.ANSIBLE_VERSION }}
         run: |
           sudo apt-get install rsync
-          python3 -m pip install ansible
+          python3 -m pip install ansible==${{ env.ANSIBLE_VERSION }}
       -
         name: 🗃️ Prepare files for deployment
         run: |
