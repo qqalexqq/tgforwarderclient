@@ -29,12 +29,12 @@ jobs:
         with:
           path: |
             ~/.cache/pip
-          key: ansible-${{ env.ANSIBLE_VERSION }}
+          key: ansible-${{ env.ANSIBLE_VERSION }}-docker-5.0.0
       -
-        name: 🍺 Install rsync and Ansible ${{ env.ANSIBLE_VERSION }}
+        name: 🍺 Install dependencies
         run: |
           sudo apt-get install rsync
-          python3 -m pip install ansible==${{ env.ANSIBLE_VERSION }}
+          python3 -m pip install ansible~=${{ env.ANSIBLE_VERSION }} docker~=5.0.0
       -
         name: 🗃️ Prepare files for deployment
         run: |
