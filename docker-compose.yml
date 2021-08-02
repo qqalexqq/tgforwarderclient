@@ -1,8 +1,8 @@
 version: '3.8'
 
 services:
-  pyrogram:
-    build: ghcr.io/qqalexqq/TGForwarderClient:latest
+  tgforwarderclient:
+    image: ghcr.io/qqalexqq/tgforwarderclient:latest
     environment:
       - API_ID=${API_ID}
       - API_HASH=${API_HASH}
