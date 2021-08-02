@@ -31,7 +31,7 @@ jobs:
             ~/.cache/pip
           key: ansible-${{ env.ANSIBLE_VERSION }}
       -
-        name: 🍺 Install rsync and Ansible {{ env.ANSIBLE_VERSION }}
+        name: 🍺 Install rsync and Ansible ${{ env.ANSIBLE_VERSION }}
         run: |
           sudo apt-get install rsync
           python3 -m pip install ansible==${{ env.ANSIBLE_VERSION }}
