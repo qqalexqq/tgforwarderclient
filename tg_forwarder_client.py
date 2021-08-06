@@ -33,16 +33,23 @@ def get_settings() -> Settings:
     return Settings()
 
 
-def send_media_group(client, media_group_id):
+def send_media_group(
+    client: Client, 
+    media_group_id: int,
+) -> None:
     settings = get_settings()
 
     for chat_id in settings.chats:
         loop.create_task(client.forward_messages(chat_id, *queues[media_group_id]))
 
 
-async def channel_handler(client, msg):
+async def channel_handler(
+    client: Client, 
+    msg: Message,
+) -> None:
     settings = get_settings()
-    if msg.chat.username in settings.channels and not msg.edit_date:
+    if msg.chat.username not in settings.channels or msg.edit_date:
+        return
         logging.info(msg.chat)
 
         if hasattr(msg, 'media_group_id') and msg.media_group_id:
@@ -51,9 +58,9 @@ async def channel_handler(client, msg):
                 loop.call_later(10, send_media_group, client, msg.media_group_id)
 
             queues[msg.media_group_id][1].append(msg.message_id)
-        else:
-            for chat_id in settings.chats:
-                await msg.forward(chat_id)
+        return
+    for chat_id in settings.chats:
+        await msg.forward(chat_id)
 
 
 def main():
