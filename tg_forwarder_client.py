@@ -7,6 +7,8 @@ from typing import List
 from dataclasses_settings import dataclass_settings
 from dataclasses_settings.params import field_params
 from pyrogram import Client, filters, handlers
+from pyrogram.types import Message
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -34,7 +36,7 @@ def get_settings() -> Settings:
 
 
 def send_media_group(
-    client: Client, 
+    client: Client,
     media_group_id: int,
 ) -> None:
     settings = get_settings()
@@ -44,7 +46,7 @@ def send_media_group(
 
 
 async def channel_handler(
-    client: Client, 
+    client: Client,
     msg: Message,
 ) -> None:
     settings = get_settings()
