@@ -52,15 +52,18 @@ async def channel_handler(
     settings = get_settings()
     if msg.chat.username not in settings.channels or msg.edit_date:
         return
-        logging.info(msg.chat)
 
-        if hasattr(msg, 'media_group_id') and msg.media_group_id:
-            if msg.media_group_id not in queues:
-                queues[msg.media_group_id] = (msg.chat.id, [])
-                loop.call_later(10, send_media_group, client, msg.media_group_id)
+    logging.info(msg.chat)
 
-            queues[msg.media_group_id][1].append(msg.message_id)
+    if hasattr(msg, 'media_group_id') and msg.media_group_id:
+        if msg.media_group_id not in queues:
+            queues[msg.media_group_id] = (msg.chat.id, [])
+            loop.call_later(10, send_media_group, client, msg.media_group_id)
+
+        queues[msg.media_group_id][1].append(msg.message_id)
+
         return
+
     for chat_id in settings.chats:
         await msg.forward(chat_id)
 
