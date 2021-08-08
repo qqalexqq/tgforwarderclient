@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   tgforwarderclient:
+    build: .
     image: ghcr.io/qqalexqq/tgforwarderclient:latest
-    # build: .
     environment:
       BOT_API_ID: ${API_ID}
       BOT_API_HASH: ${API_HASH}
@@ -16,8 +16,12 @@ services:
           "radio_t_podcast",
           "durov_russia",
           "daily_geek_news",
+          "ot_magomeda",
           "asdfajsdfkl"
         ]
-      BOT_CHATS: "[-1001005702961]"
+      BOT_CHATS: |
+        [
+          -1001005702961
+        ]
       BOT_SESSION_KEY: ${SESSION_KEY}
     restart: always
