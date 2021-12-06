@@ -15,7 +15,7 @@ services:
         radio_t_podcast
         durov_russia
         daily_geek_news
-        ot_magomeda
+        random_science
         asdfajsdfkl
       BOT_CHATS: |
         -1001005702961
