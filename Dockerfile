@@ -1,8 +1,11 @@
-FROM python:3.9-slim
+FROM python:3.9.13
 
-ADD requirements.txt ./
-RUN pip install -r requirements.txt -U
+ENV POETRY_VIRTUALENVS_CREATE=false
+ENV POETRY_NO_INTERACTION=1
+
+RUN pip install "poetry==1.1.14" -U
+ADD pyproject.toml poetry.lock ./
+RUN poetry install --no-dev
 ADD tgforwarderclient/ /tgforwarderclient
-ADD export_session.py ./
 
-CMD ["python", "-m", "tgforwarderclient"]
+ENTRYPOINT ["python", "-m", "tgforwarderclient"]

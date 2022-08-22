@@ -1,4 +1,4 @@
-from tgforwarderclient.main import main
+from tgforwarderclient.main import cli_main
 
 if __name__ == "__main__":
-    main()
+    cli_main()

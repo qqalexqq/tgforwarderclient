@@ -9,7 +9,7 @@ logging.basicConfig(
     datefmt="%Y/%m/%d %H:%M:%S",
     format="%(levelname)s: %(message)s",
 )
-queues = {}
+queues = {}  # type: ignore
 
 
 def send_media_group(
@@ -36,7 +36,7 @@ async def channel_handler(
         if msg.media_group_id not in queues:
             queues[msg.media_group_id] = (msg.chat.id, [])
             loop.call_later(10, send_media_group, client, msg.media_group_id, chats)
-        queues[msg.media_group_id][1].append(msg.message_id)
+        queues[msg.media_group_id][1].append(msg.id)
         return
     for chat_id in chats:
         await msg.forward(chat_id)
