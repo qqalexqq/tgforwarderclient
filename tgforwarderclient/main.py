@@ -53,7 +53,16 @@ def cli_main() -> None:
     type=int,
     multiple=True,
 )
+@option(
+    "--session_name",
+    help="Session name",
+    required=False,
+    default="forwarder_account",
+    show_default=True,
+    allow_from_autoenv=True,
+)
 def run_command(
+    session_name: str,
     api_id: int,
     api_hash: str,
     session_key: str,
@@ -61,6 +70,7 @@ def run_command(
     chats: list[int],
 ) -> None:
     app = make_app(
+        session_name=session_name,
         api_id=api_id,
         api_hash=api_hash,
         session_key=session_key,
