@@ -6,7 +6,7 @@
 2. Fill out the form to register a new Telegram application.
 3. After registration you get an API key. It consists of two parts: `api_id` and `api_hash` - set those as env variables to `$API_ID` and `$API_HASH` (you can save them for persistence to `.env` file).
 4. Run the app interactively:
-```docker run -it -e API_ID -e API_HASH ghcr.io/qqalexqq/tgforwarderclient:latest python export_session.py```
+```docker run -e API_ID -e API_HASH -i ghcr.io/qqalexqq/tgforwarderclient:latest export```
 5. Input your data:
 ```Enter phone number or bot token: 9876543210
 Is "+9876543210" correct? (y/N): y

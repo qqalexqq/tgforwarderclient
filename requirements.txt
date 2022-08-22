@@ -1,3 +1,0 @@
-click ~=8.0.1
-Pyrogram ~=1.2.11
-TgCrypto ~=1.2.2

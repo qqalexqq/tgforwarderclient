@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   tgforwarderclient:
-    build: .
     image: ghcr.io/qqalexqq/tgforwarderclient:latest
+    entrypoint: run
     environment:
       BOT_API_ID: ${API_ID}
       BOT_API_HASH: ${API_HASH}
