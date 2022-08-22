@@ -40,9 +40,9 @@ extension-pkg-whitelist = "pydantic"
 
 [tool.poetry]
 name = "tgforwarderclient"
-version = "0.1.0"
+version = "1.0.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Aleksandr Mikheev <qqalexqq@yandex.ru>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
