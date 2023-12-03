@@ -8,7 +8,6 @@ services:
       BOT_API_ID: ${API_ID}
       BOT_API_HASH: ${API_HASH}
       BOT_CHANNELS: |
-        addmeto
         techsparks
         g33ks
         blognot
